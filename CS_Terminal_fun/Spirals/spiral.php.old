@@ -1,0 +1,45 @@
+<?php
+echo "\nNo longer used.  Please use show_spiral.php";
+exit;
+/**
+ * Sprial Solution
+ * 
+ * Recursively searches and replaces.  Each of the for loops prints one side of the square (top, right, bottom, left).
+ * We then increment the j and decrement the i (making the box smaller) and do it again.
+ * 
+ * @todo
+ * Too much going on here.  May want to split this out into directional pad-type sorting, and pretty it up.
+ * 
+ * @copyright 2012, Jonathon Hibbard
+ * @author Jonathon Hibbard
+ */
+function print_spiral(array $spiral) {
+	for($i=sizeof($spiral)-1, $j=0; $i >= 0; $i--, $j++) {
+		for($k = $j; $k < $i; $k++) {
+			echo $spiral[$j][$k] . ' ';
+		}
+		for($k = $j; $k < $i; $k++) {
+			echo $spiral[$k][$i] . ' ';
+		}
+		for($k = $i; $k > $j; $k--) {
+			echo $spiral[$i][$k] . ' ';
+		}
+		for($k = $i; $k > $j; $k--) {
+			echo $spiral[$k][$j] . ' ';
+		}
+	}
+	echo "\n";
+}
+
+$filename = trim($argv[1]);
+$file_contents = file_get_contents($filename);
+
+$spiral = array();
+foreach(explode("\n", $file_contents) as $line) {
+	if($line) {
+		$spiral[] = explode(' ', $line);
+  }
+}
+
+print_spiral($spiral);
+?>

@@ -1,0 +1,19 @@
+Usage: ./prompt_tool_skeleton.php
+
+++Arguments WITH REQUIRED value
+  -m, --message           A Message to display when the prompt is displayed
+
+--Arguments WITH OPTIONAL value
+  -n, --answersWithNo   An Optional Message to display No is chosen from the prompt
+
+++Optional Arguments WITHOUT value
+  -h, --help                Show this Usage Help Information
+
+Examples:
+[1]
+  ./prompt_tool_skeleton.php
+  ./prompt_tool_skeleton.php -m "Would you like to exit?"
+  ./prompt_tool_skeleton.php -m="Would you like to exit?" -n
+  ./prompt_tool_skeleton.php -m "Would you like to exit?" -n="Well Hellllooo there!"
+  ./prompt_tool_skeleton.php --message="How about this time?" -n "Whoot!"
+  ./prompt_tool_skeleton.php --help

@@ -1,0 +1,113 @@
+<?php
+/**
+ * This script takes in an argument of the path to a file, of which its string contents are
+ * to be shown in the standard out in spiral form.
+ * 
+ * The following requirements have been applied to any strings found within the source:
+ *    [x] A function created to print a 2-D array (n x m) in spiral order (clockwise)
+ * 
+ * This script is intended to be run from the command line.  With that being the case,
+ * the following checks must pass before the script will execute:
+ *    [x] register_argc_argv must be enabled and exist within the current php configuration.
+ *    [x] A valid filename must be passed to the script (Represented with $argv[1]) along with read permissions.
+ * 
+ * DEFINITIONS:
+ * Nodes and Paths: 
+ * A "node" represents an "object", which in turn has a "path" that could potentially point
+ * to other "nodes", and/or eventually to a "dead end".
+ * @see node() (classes/node.php)
+ * 
+ * This more clearly represnts the "locations" (called nodes in the preceeding code).  The
+ * "node_path" definition has been used to give a more accurate meaning as to what is meant by
+ * "...travel to ... another location".  The "node_path" is essentially how one "node" is connected
+ * to another "node", or even to a "dead end".
+ *      "You are given a puzzle which contains N locations. From each location, you can 
+ *       travel to a maximum of one other location on the puzzle or to a dead end..."
+ *
+ * Graph:
+ * A graph can be defined as a collection of both 'nodes' and their 'paths'.  The graph object included
+ * within this application not only tracks and stores these collections, but also creates them.
+ * 
+ * @see graph() (classes/graph.php)
+ * 
+ * @todo
+ * The Graph object is a bit complex as it is right now.  It should be broken down more into other
+ * objects using design patterns relevant to adding more polymorphism.
+ * 
+ * This script is intended to be run from the command line.  With that being the case,
+ * the following checks must pass before the script will execute:
+ *    [x] register_argc_argv must be enabled and exist within the current php configuration.
+ *    [x] A valid filename must be passed to the script (Represented with $argv[1]) along with read permissions.
+ * 
+ * @author Jonathon Hibbard
+ * @copyright Copyright (c) 2012, Jonathon Hibbard
+ * @example
+ * php show_spiral.php /path/to/source_file.txt
+ * 
+ * @filesource
+ */
+
+# Try to get the register_argc_argv setting in the php.ini...
+$is_argv_enabled = ini_get("register_argc_argv");
+
+# If ini_get returned a false, empty, or 0, we won't have access to $argv, so exit.
+if(empty($is_argv_enabled)) {
+  exit;
+}
+
+# Make sure they actually passed anything to our script.  Otherwise, exit.
+if(!isset($argv) || !isset($argv[1])) {
+  exit;
+}
+
+# Get the argument passed.  We'll call it filename here as that is the assumed value.
+$filename = trim($argv[1]);
+
+# If we don't have a valid, non-empty file, just exit.
+if(!is_file($filename) || !is_readable($filename) || filesize($filename) == 0) {
+  exit;
+}
+
+# load the file that is to hold our nodes..
+$node_source     = file_get_contents($filename);
+# clean up the file and remove duplicate line breaks if they exist.
+$node_source     = preg_replace('/[\r\n]+/', "\n", $node_source);
+
+# This will be used to obtain both the # of nodes being reported, but also if it truly matches our node count.
+$number_of_nodes = 0;
+
+# Explode on lines to create our initial array.
+$nodes_array     = explode("\n", $node_source);
+
+# This will hold only the nodes we want to investigate.
+$node_paths      = array();
+
+# Get the number of nodes being reported in the document.
+$number_of_nodes = intval(array_shift($nodes_array));
+# Get the nubmer of nodes we actually have
+$x = count($nodes_array);
+
+# remove all dead lines and create a nice array we can use.
+for($i = 0; $i < $x; $i++) {
+  if(true === is_numeric($nodes_array[$i]) || !empty($nodes_array[$i])) {
+    $node_paths[] = trim(preg_replace('/[\s]+/', ' ', $nodes_array[$i]));
+  }
+}
+
+# Does our array match what was reported to be the number of nodes we are to have?
+if($number_of_nodes != count($node_paths)) {
+  # Guess not.  Exit.
+  // throw new Exception("Invalid node count based on number of nodes defined in the source file!");
+  exit;
+}
+# Require here as we cannot do this without the graph object.
+require_once("classes/graph.php");
+# pass in the nodes we want to track
+$graph = new graph($node_paths);
+
+# Process the node stack and look for cycles, tracking any that are found.
+$graph->processNodeStack();
+
+# print out how many cyles (if any) that we found.
+echo $graph->getNumCycles() . "\n";
+?>
