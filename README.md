@@ -17,6 +17,9 @@ This code is probably missing some commenting.  I'll try to update it as I have 
 This code is distributed under the terms and conditions of the [MIT license](LICENSE).
 
 
+## DataOCD
+The [DataOCD Github Repository](https://github.com/dataocd) is also a sister repository my cousin (James Phillips) and I worked on for a hot second.  Contains some pretty cool stuff relating to RESTful ROA services if you're looking for that sort of thing.
+
 Enjoy! :neckbeard:
 
 -Jon
