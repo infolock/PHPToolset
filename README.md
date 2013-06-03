@@ -14,7 +14,8 @@ This section will have to be updated.  For now just know this:
 
 ---
 
-One final note:
+## Notes
+
 This is a repo that will grow over time as I have time to dig through them and upload them.
 
 Granted, I'm giving this code out to the public in hopes that it is either helpful to someone, or can be used as a running joke on a smarter developer's blog.
