@@ -3,9 +3,20 @@ PHPToolset
 
 Just a collection of PHP scripts that I have built over the past 12 years while coding PHP.
 
-This is a repo that will grow over time as I have time to dig through them and upload them.
+
+## Contents
+
+This section will have to be updated.  For now just know this:
+
+CS_Terminal_fun is a directory containing some CS-related theory.
+classes is a direcotry containing...well, yeah. classes. 
+terminal_tools is a collection of terminal tools I created for making some maintenance-level ops better.
+
+
 
 One final note:
+This is a repo that will grow over time as I have time to dig through them and upload them.
+
 Granted, I'm giving this code out to the public in hopes that it is either helpful to someone, or can be used as a running joke on a smarter developer's blog.
 
 But hey, should the chance that this code actually do you good and you feel compelled to say, buy me a beer or something - I may be so inclined to accept =)
