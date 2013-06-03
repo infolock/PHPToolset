@@ -10,10 +10,10 @@ Granted, I'm giving this code out to the public in hopes that it is either helpf
 
 But hey, should the chance that this code actually do you good and you feel compelled to say, buy me a beer or something - I may be so inclined to accept =)
 
-``Commenting``
+## Commenting
 This code is probably missing some commenting.  I'll try to update it as I have time.
 
-``License``
+## License
 This code is distributed under the terms and conditions of the [MIT license](LICENSE).
 
 
