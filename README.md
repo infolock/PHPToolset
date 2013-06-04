@@ -41,7 +41,7 @@ The [DataOCD Github Repository](https://github.com/dataocd) is also a sister rep
 * [PHPAdvocate](https://www.phpadvocate.com/)  - I don't maintain it as well as I wish, but you may find some useful information there relating to PHP, iOS, security and rants.
 * [Delicious](https://www.delicious.com/infolock) - All sorts of links I've found useful over the years.
 * [Linkedin](https://www.linkedin.com/jhibbard) - Wanna connect with me?  Send me an invite - always looking for fellow developers to network with.
-* [Stackoverflow](https://www.stackoverflow.com/infolock) - Some comments I'm proud of, others not so much.  Reader beware >:)
+* [Stackoverflow](http://stackoverflow.com/users/1244184/jonathon-hibbard) - Some comments I'm proud of, others not so much.  Reader beware >:)
 
 
 Enjoy! :neckbeard:
