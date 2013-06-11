@@ -38,7 +38,7 @@ This code is distributed under the terms and conditions of the [MIT license](LIC
 The [DataOCD Github Repository](https://github.com/dataocd) is also a sister repository my cousin (James Phillips) and I worked on for a hot second.  Contains some pretty cool stuff relating to RESTful ROA services if you're looking for that sort of thing.
 
 ## Links
-* [PHPAdvocate](https://www.phpadvocate.com/)  - I don't maintain it as well as I wish, but you may find some useful information there relating to PHP, iOS, security and rants.
+* [PHPAdvocate](http://phpadvocate.com/blog/)  - I don't maintain it as well as I wish, but you may find some useful information there relating to PHP, iOS, security and rants.
 * [Delicious](https://www.delicious.com/infolock) - All sorts of links I've found useful over the years.
 * [Linkedin](https://www.linkedin.com/jhibbard) - Wanna connect with me?  Send me an invite - always looking for fellow developers to network with.
 * [Stackoverflow](http://stackoverflow.com/users/1244184/jonathon-hibbard) - Some comments I'm proud of, others not so much.  Reader beware >:)
