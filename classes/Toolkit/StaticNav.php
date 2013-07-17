@@ -8,6 +8,32 @@
  *
  * Built this for my new portfolio page just as a quick way to offer a temporary solution until I
  * can integrate a router/controller system.
+ *
+ *
+ * @example
+ *
+ * // index.php
+ * <?php
+ * // Set a page (ie: 'intro') as the current page
+ * include_once("/path/to/StaticNav.php");
+ * StaticNav::getInstance()->setActivePage('intro');
+ * 
+ * include_once("topNav.php");
+ * // ....
+ * ?>
+ *
+ *
+ * // topNav.php
+ * <?php
+ * include_once("/path/to/StaticNav.php");
+ *
+ * $activePageInfo = StaticNav::getInstance()->getActivePage();
+ * $activePage = (!empty($activePageInfo) ? $activePageInfo['name'] : "UNKNOWN");
+ *
+ * // Do something with the active page name, like active an item in the nav
+ * // ....
+ * 
+ * ?>
  */
 
 namespace Toolkit;
@@ -42,7 +68,7 @@ class StaticNav {
 
   public function getPageInfoForPage($page) {
     if(is_string($page) && isset($this->pages[strtolower($page)])) {
-      $page = strotlower($page);
+      $page = strtolower($page);
       return array("name" => $page,
                    "url"  => $this->pages[$page]
                   );
