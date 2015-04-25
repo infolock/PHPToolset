@@ -23,8 +23,8 @@
  * THE SOFTWARE.
  */
 class NinjaAPISecurity {
-
-  const N_PEPPER = 'SOMEONE_SET_US_UP_WITH_THE_BOMB!';
+  // Used in conjunction with the salt to be applied to the overall HMAC hash...
+  // const N_PEPPER = 'SOMEONE_SET_US_UP_WITH_THE_BOMB!';
 
   /**
    * @static
@@ -36,20 +36,25 @@ class NinjaAPISecurity {
   /**
    * Yeah... change this.
    */
-  private getUserInfoForUserId($user_id) {
-    return array("user_id" => $user_id, "username" => "happy", "password" => md5("gilmorefeet"), "generated_key" => md5(self::$public_key . time()));
+  private getUserInfoForUserId( $user_id ) {
+    return array(
+      "user_id"       => $user_id, 
+      "username"      => "happy",
+      "password"      => md5("gilmorefeet"),
+      "generated_key" => md5( self::$public_key . time() )
+    );
   }
 
   /**
    * Yeah... change this.
    */
-  private getSharedSecretForUserId($user_id) {
+  private getSharedSecretForUserId( $user_id ) {
     // ....
     // do whatever to get the value you're exepcting.
     // because this is just an example...
-    $user_info = self::getUserInfoForUserId($user_id);
-    return md5($user_id . $user_info['generated_key'] . $user_info['password']); 
+    $user_info = self::getUserInfoForUserId( $user_id );
 
+    return md5( $user_id . $user_info['generated_key'] . $user_info['password'] ); 
   }
 
   /**
@@ -60,8 +65,10 @@ class NinjaAPISecurity {
    *
    * @throws Exception when $salt is not a string or is empty.
    */
-  private static verifySalt($salt) {
-    if(!is_string($salt) || empty($salt)) throw new Exception("The Salt must be a valid string!");
+  private static verifySalt( $salt ) {
+    if( empty( $salt ) || !is_string( $salt ) ) {
+      throw new Exception( "The Salt must be a valid string!" );
+    }
   }
 
   /**
@@ -74,7 +81,9 @@ class NinjaAPISecurity {
    * @throws Exception when the iteration count recieved is less than the minimum iteration size allowed.
    */
   private static function verifyIterationCount($count, $min_iteration_size = 1024) {
-    if(intval($count) < $min_iteration_size) throw new Exception("Count must be at least $min_iteration_size ...");
+    if( intval( $count ) < $min_iteration_size ) {
+      throw new Exception( "Count must be at least $min_iteration_size ..." );
+    }
   }
 
   /**
@@ -88,7 +97,9 @@ class NinjaAPISecurity {
    * @throws Exception when the $key_length recieved does not equal either the min or max length expected.
    */
   private static function verifyKeyLength($key_length, $min_length = 16, $max_length = 32) {
-    if(intval($key_length) != $min_length && intval($key_length) != $max_length) throw new Exception("The key length must either be $min_length or $max_length32!");
+    if( intval( $key_length ) != $min_length && intval( $key_length ) != $max_length ) {
+      throw new Exception( "The key length must either be $min_length or $max_length32!" );
+    }
   }
 
   /**
@@ -101,18 +112,24 @@ class NinjaAPISecurity {
    *
    * @return string  $dk - Returns the derived key needed to complete the hash.
    */
-  private static function derivedKeyUsingAlgorithmWithSalt($algorithm, $shared_secret, $salt) {
+  private static function derivedKeyUsingAlgorithmWithSalt( $algorithm, $shared_secret, $salt ) {
     # Derived key
     $dk = '';
+
     # Create key
-    for($block = 1; $block <= $kb; $block ++ ) {
+    for( $block = 1; $block <= $kb; $block ++ ) {
       # Initial hash for this block
-      $ib = $b = hash_hmac($algorithm, $shared_secret . pack('N', $block), $salt, true);
+      $ib = $b = hash_hmac( $algorithm, $shared_secret . pack( 'N', $block ), $salt, true );
+
       # Perform block iterations and XOR each iterate
-      for($i = 1; $i < $count; $i ++) $ib ^= ($b = hash_hmac($algorithm, $b, $salt, true));
+      for($i = 1; $i < $count; $i ++) {
+        $ib ^= ( $b = hash_hmac($algorithm, $b, $salt, true ) );
+      }
+
       # Append iterated block
       $dk .= $ib;
     }
+
     return $dk;
   }
 
@@ -155,23 +172,26 @@ class NinjaAPISecurity {
    *   - Added validations to the items being recieved to the method via the private methods attached.
    *   - Removed the ability to define the algorithm to use, and set it to be, by default, sha1.  *shrug*, put it back in place if you want.
    */
-  protected function PBKDF2($shared_secret, $salt, $count = 1024, $key_length = 16, $return_as_base64 = true) {
+  protected function PBKDF2( $shared_secret, $salt, $count = 1024, $key_length = 16, $return_as_base64 = true ) {
     # force sha1 as the algorithm.
     $algorithm = 'sha1';
 
-    $this->verifySalt($salt);
-    $this->verifyIterationCount($count);
-    $this->verifyKeyLength($key_length);
+    $this->verifySalt( $salt );
+    $this->verifyIterationCount( $count );
+    $this->verifyKeyLength( $key_length );
 
-    $dk = $this->derivedKeyUsingAlgorithmWithSalt($algorithm, $shared_secret, $salt);
+    $dk = $this->derivedKeyUsingAlgorithmWithSalt( $algorithm, $shared_secret, $salt );
+
     # Hash length
-    $hl = strlen(hash($algorithm, null, true));
+    $hl = strlen( hash( $algorithm, null, true ) );
+
     # Key blocks to compute
-    $kb = ceil($key_length / $hl);
+    $kb = ceil( $key_length / $hl );
 
     # Return derived key of correct length
-    $pbkdf2_hash = substr($dk, 0, $key_length);
-    return ($return_as_base64 === true) ? base64_encode($pbkdf2_hash) : $pbkdf2_hash;
+    $pbkdf2_hash = substr( $dk, 0, $key_length );
+
+    return $return_as_base64 ? base64_encode( $pbkdf2_hash ) : $pbkdf2_hash;
   }
 
 
@@ -186,10 +206,10 @@ class NinjaAPISecurity {
    *   // BOOOOM!  FAILURE!
    * }
    */
-  public static function isValidHMAC($user_id, $salt, $unverified_HMAC) {
-    $shared_secret = self::getSharedSecretForUserId($user_id);
-    $salt = self::getSalt();
-    $proper_HMAC = self::PBKDF2($shared_secret, $salt);
+  public static function isValidHMAC( $user_id, $salt, $unverified_HMAC ) {
+    $shared_secret = self::getSharedSecretForUserId( $user_id );
+    $salt          = self::getSalt();
+    $proper_HMAC   = self::PBKDF2( $shared_secret, $salt );
 
     return $proper_HMA == $unverified_HMAC;
   }
