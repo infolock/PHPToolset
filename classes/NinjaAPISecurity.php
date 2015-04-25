@@ -135,6 +135,7 @@ class NinjaAPISecurity {
 
   /**
    * @author Andrew Johnson
+   * @author Jonathon Hibbard (just expanded on Andrew's concept and applied it to this overall solution)
    * @source http://www.itnewb.com/tutorial/Encrypting-Passwords-with-PHP-for-Storage-Using-the-RSA-PBKDF2-Standard
    * PBKDF2 Implementation (described in RFC 2898 - http://www.ietf.org/rfc/rfc2898.txt)
    *
